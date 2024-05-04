@@ -10,7 +10,7 @@ const MyTheme = {
   image: "editor-image",
   link: "editor-link",
   list: {
-    listitem: "editor-listitem",
+    listitem: "editor-listitem list-decimal",
     nested: {
       listitem: "editor-nested-listitem",
     },

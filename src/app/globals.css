@@ -12,7 +12,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.other h2 {
+/* .other h2 {
   font-size: 18px;
   color: #444;
   margin-bottom: 7px;
@@ -28,7 +28,7 @@ body {
   padding: 0;
   margin: 0;
   list-style-type: none;
-}
+} */
 
 .App {
   font-family: sans-serif;

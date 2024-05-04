@@ -10,6 +10,9 @@ import getSelectedNode from "../../utils/getSelectedNode";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import FloatingLinkEditor from "../../components/FloatingLinkEditor";
 import { createPortal } from "react-dom";
+import { INSERT_ORDERED_LIST_COMMAND } from "@lexical/list";
+import { INSERT_YOUTUBE_COMMAND } from "../YoutubePlugin/YoutubePlugin";
+import { youtubeIdMatcher } from "../../utils/youtubeIdMatcher";
 
 export interface IToolbarPluginProps {}
 
@@ -17,6 +20,7 @@ export default function ToolbarPlugin(props: IToolbarPluginProps) {
   const [editor] = useLexicalComposerContext();
   const toolbarRef = React.useRef<HTMLDivElement>(null);
   const [isLink, setIsLink] = React.useState(false);
+  const [youtubeId, setYoutubeId] = React.useState<string | null>(null);
 
   const LowPriority = 1;
 
@@ -34,13 +38,26 @@ export default function ToolbarPlugin(props: IToolbarPluginProps) {
     }
   }, []);
 
+  const fillUrl = React.useCallback(() => {
+    const url = prompt("Enter the URL of the YouTube video:", "");
+    console.log("url", url);
+
+    if (url === null) {
+      return;
+    }
+    const id = youtubeIdMatcher(url!);
+    if (id === null) {
+      return;
+    }
+    return id;
+  }, []);
+
   const insertLink = React.useCallback(() => {
     if (!isLink) {
       editor.dispatchCommand(TOGGLE_LINK_COMMAND, "https://");
     } else {
       editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
     }
-    console.log("isLink", isLink);
   }, [editor, isLink]);
 
   React.useEffect(() => {
@@ -52,9 +69,8 @@ export default function ToolbarPlugin(props: IToolbarPluginProps) {
       }),
       editor.registerCommand(
         SELECTION_CHANGE_COMMAND,
-        (payload: any) => {
+        () => {
           updateToolbar();
-          console.log("selection change payload", payload);
           return false;
         },
         LowPriority
@@ -103,9 +119,15 @@ export default function ToolbarPlugin(props: IToolbarPluginProps) {
           Heading 5
         </button>
         <button className="toolbar-button px-3 py-2 font-bold">List</button>
-        <button className="toolbar-button px-3 py-2 font-bold">
+        <button
+          className="toolbar-button px-3 py-2 font-bold"
+          onClick={() => {
+            editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+          }}
+        >
           Ordered List
         </button>
+
         <button className="toolbar-button px-3 py-2 font-bold">
           Unordered List
         </button>
@@ -114,6 +136,14 @@ export default function ToolbarPlugin(props: IToolbarPluginProps) {
         <button className="toolbar-button px-3 py-2 font-bold">RTL</button>
         <button className="toolbar-button px-3 py-2 font-bold">
           Overflowed
+        </button>
+        <button
+          className="toolbar-button px-3 py-2 font-bold"
+          onClick={() => {
+            editor.dispatchCommand(INSERT_YOUTUBE_COMMAND, fillUrl()!);
+          }}
+        >
+          Youtube
         </button>
       </div>
     </>
