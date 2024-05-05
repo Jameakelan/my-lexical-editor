@@ -16,6 +16,7 @@ import { EditorState, LexicalEditor } from "lexical";
 import { $generateHtmlFromNodes } from "@lexical/html";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import YouTubePlugin from "./plugin/YoutubePlugin/YoutubePlugin";
+import ImagesPlugin from "./plugin/ImagePlugin/ImagePlugin";
 
 export interface IMyEditorProps {}
 
@@ -41,6 +42,7 @@ export default function MyEditor(props: IMyEditorProps) {
           <ListPlugin />
           <AutoLinkPlugin matchers={MATCHERS} />
           <YouTubePlugin />
+          <ImagesPlugin />
         </div>
       </LexicalComposer>
       {/* <div dangerouslySetInnerHTML={{ __html: content }}></div> */}
@@ -64,3 +66,5 @@ export default function MyEditor(props: IMyEditorProps) {
     });
   }
 }
+
+module.exports = MyEditor;

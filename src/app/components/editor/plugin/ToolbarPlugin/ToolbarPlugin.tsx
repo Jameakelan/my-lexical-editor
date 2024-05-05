@@ -13,6 +13,10 @@ import { createPortal } from "react-dom";
 import { INSERT_ORDERED_LIST_COMMAND } from "@lexical/list";
 import { INSERT_YOUTUBE_COMMAND } from "../YoutubePlugin/YoutubePlugin";
 import { youtubeIdMatcher } from "../../utils/youtubeIdMatcher";
+import {
+  INSERT_IMAGE_COMMAND,
+  InsertImagePayload,
+} from "../ImagePlugin/ImagePlugin";
 
 export interface IToolbarPluginProps {}
 
@@ -131,7 +135,18 @@ export default function ToolbarPlugin(props: IToolbarPluginProps) {
         <button className="toolbar-button px-3 py-2 font-bold">
           Unordered List
         </button>
-        <button className="toolbar-button px-3 py-2 font-bold">Image</button>
+        <button
+          className="toolbar-button px-3 py-2 font-bold"
+          onClick={() => {
+            const payload: InsertImagePayload = {
+              src: "https://images.pexels.com/photos/5656637/pexels-photo-5656637.jpeg?auto=compress&cs=tinysrgb&w=200",
+              altText: "",
+            };
+            editor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
+          }}
+        >
+          Image
+        </button>
         <button className="toolbar-button px-3 py-2 font-bold">LTR</button>
         <button className="toolbar-button px-3 py-2 font-bold">RTL</button>
         <button className="toolbar-button px-3 py-2 font-bold">
